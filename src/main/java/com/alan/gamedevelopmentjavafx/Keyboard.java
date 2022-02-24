@@ -55,11 +55,11 @@ public class Keyboard extends Application {
 
         Image background = new Image( "BackgroundOrgrimmar.jpg" );
 
-        Image left = new Image( "Garroshinvert.gif" );
-        Image leftG = new Image( "Garrosh spray.png" );
+        Image left = new Image( "Garrosh.gif" );
+        Image right = new Image( "Garroshinvert.gif" );
+        Image axe = new Image( "Gorehowl.png" );
 
-        Image right = new Image( "Garrosh.gif" );
-        Image rightG = new Image( "sun.png" );
+
 
         new AnimationTimer()
         {
@@ -74,27 +74,71 @@ public class Keyboard extends Application {
 
                 gc.drawImage( background, 0, 0,1980,1080);
 
-                if (input.contains("LEFT"))
-                    gc.drawImage( leftG, 64, 64 );
-                else
-                    gc.drawImage( left, 64, 64 );
 
-                if (input.contains("RIGHT")){
-                    x+=1;
-                    gc.drawImage( rightG, x, y );
+                if(input.contains("F")){
+                    gc.drawImage( axe, x + 10, y + 10 );
+                }
+
+                if(x == 1600 ) {
+                    x-=5;
+                    gc.drawImage( right, x, y );
+                    //System.out.println("X: " + x + "Y: " + y);
+
                 }else
-                    gc.drawImage( right, 256, 64 );
+                if(y == 725){
+                    y-=5;
+                    gc.drawImage( left, x, y );
+                }else
+                if(x == -50 ) {
+                    x+=5;
+                    gc.drawImage( left, x, y );
+                }else
+                if(y == -50){
+                    y+=5;
+                    gc.drawImage( left, x, y );
+                }
+                    //System.out.println("X: " + x + "Y: " + y);
+
+                if (input.contains("RIGHT") && input.contains("UP")){
+                    x+=5;
+                    y-=5;
+                    gc.drawImage( right, x, y );
+                }else
+                if (input.contains("RIGHT") && input.contains("DOWN")){
+                    x+=5;
+                    y+=5;
+                    gc.drawImage( right, x, y );
+                }else
+                if (input.contains("LEFT") && input.contains("UP")){
+                    x-=5;
+                    y-=5;
+                    gc.drawImage( left, x, y );
+                }else
+                if (input.contains("LEFT") && input.contains("DOWN")){
+                    x-=5;
+                    y+=5;
+                    gc.drawImage( left, x, y );
+                }else
+                if (input.contains("RIGHT")){
+                    x+=5;
+                    gc.drawImage( right, x, y );
+                }else
                 if (input.contains("UP")){
-                    y+=1;
-                    gc.drawImage( rightG, x, y );
-                }
+                    y-=5;
+                    gc.drawImage( left, x, y );
+                }else
                 if (input.contains("DOWN")){
-                    y-=1;
-                    gc.drawImage( rightG, x, y );
+                    y+=5;
+                    gc.drawImage( left, x, y );
+                }else
+                if (input.contains("LEFT")){
+                    x-=5;
+                    gc.drawImage( left, x, y );
+                }
+                else gc.drawImage( left, x, y );
+
                 }
 
-
-            }
         }.start();
 
         theStage.show();
