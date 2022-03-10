@@ -58,14 +58,18 @@ public class Keyboard extends Application {
         Image left = new Image( "Garrosh.gif" );
         Image right = new Image( "Garroshinvert.gif" );
         Image axe = new Image( "Gorehowl.png" );
-
+        Image dehaka = new Image("space.png");
 
 
         new AnimationTimer()
         {
+            boolean derechaizquietda = false;
             int x = 0;
             int y = 0;
-
+            int xrandom = 0;
+            int yrandom = 0;
+            boolean rightleft = true;
+            boolean topdown = true;
             public void handle(long currentNanoTime)
             {
 
@@ -74,70 +78,108 @@ public class Keyboard extends Application {
 
                 gc.drawImage( background, 0, 0,1980,1080);
 
-
                 if(input.contains("F")){
                     gc.drawImage( axe, x + 10, y + 10 );
                 }
 
-                if(x == 1600 ) {
-                    x-=5;
-                    gc.drawImage( right, x, y );
-                    //System.out.println("X: " + x + "Y: " + y);
 
-                }else
-                if(y == 725){
-                    y-=5;
-                    gc.drawImage( left, x, y );
-                }else
-                if(x == -50 ) {
-                    x+=5;
-                    gc.drawImage( left, x, y );
-                }else
-                if(y == -50){
-                    y+=5;
-                    gc.drawImage( left, x, y );
-                }
+                xrandom = randomx();
+                yrandom = randomy();
+                gc.drawImage(dehaka, xrandom ,yrandom);
+
+
+                if(x == 1600 ) x-=5;
+                else if(y == 725) y-=5;
+                else if(x == -50 ) x+=5;
+                else if(y == -50) y+=5;
+
+
                     //System.out.println("X: " + x + "Y: " + y);
 
                 if (input.contains("RIGHT") && input.contains("UP")){
                     x+=5;
                     y-=5;
                     gc.drawImage( right, x, y );
+                    derechaizquietda = true;
                 }else
                 if (input.contains("RIGHT") && input.contains("DOWN")){
                     x+=5;
                     y+=5;
                     gc.drawImage( right, x, y );
+                    derechaizquietda = true;
                 }else
                 if (input.contains("LEFT") && input.contains("UP")){
                     x-=5;
                     y-=5;
                     gc.drawImage( left, x, y );
+                    derechaizquietda = false;
                 }else
                 if (input.contains("LEFT") && input.contains("DOWN")){
                     x-=5;
                     y+=5;
                     gc.drawImage( left, x, y );
+                    derechaizquietda = false;
                 }else
                 if (input.contains("RIGHT")){
                     x+=5;
                     gc.drawImage( right, x, y );
+                    derechaizquietda = true;
                 }else
                 if (input.contains("UP")){
                     y-=5;
-                    gc.drawImage( left, x, y );
+                    if(derechaizquietda){
+                        gc.drawImage( right, x, y );
+                    }
+                    else{
+                        gc.drawImage( left, x, y );
+                    }
                 }else
                 if (input.contains("DOWN")){
                     y+=5;
-                    gc.drawImage( left, x, y );
+                    if(derechaizquietda){
+                        gc.drawImage( right, x, y );
+                    }
+                    else{
+                        gc.drawImage( left, x, y );
+                    }
                 }else
                 if (input.contains("LEFT")){
                     x-=5;
                     gc.drawImage( left, x, y );
+                    derechaizquietda = false;
                 }
-                else gc.drawImage( left, x, y );
+                /*else{
+                    gc.drawImage( left, x, y );
+                    derechaizquietda = false;
+                }*/
+
+                if(derechaizquietda){
+                    gc.drawImage( right, x, y );
+                }
+                else{
+                    gc.drawImage( left, x, y );
+                }
 
                 }
+
+                int randomx (){
+                if(xrandom == 1750 ){
+                    rightleft=false;
+                }
+                 else if(xrandom == -50 )rightleft=true;
+                if(rightleft)return xrandom+5;
+                else return xrandom-5;
+
+                }
+            int randomy (){
+                if(yrandom == 725 ){
+                    topdown=false;
+                }
+                else if(yrandom == -50 )topdown=true;
+                if(topdown)return yrandom+5;
+                else return yrandom-5;
+
+            }
 
         }.start();
 
