@@ -28,7 +28,7 @@ public class RotationExample extends Application {
         Rotate rotate = new Rotate();
 
         //Setting the angle for the rotation
-        rotate.setAngle(20);
+        rotate.setAngle(180);
 
         //Setting pivot points for the rotation
         rotate.setPivotX(150);
