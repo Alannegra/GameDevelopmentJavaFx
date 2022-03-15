@@ -94,11 +94,11 @@ public class Keyboard extends Application {
         weapon.setImage(axe);
 
 
-
         Font theFont = Font.font( "Helvetica", FontWeight.BOLD, 24 );
         gc.setFont( theFont );
         gc.setStroke( Color.BLACK );
         gc.setLineWidth(1);
+
 
 
         new AnimationTimer()
