@@ -3,6 +3,7 @@ package com.alan.gamedevelopmentjavafx;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.RotateEvent;
 import javafx.scene.shape.Rectangle;
 
 public class Sprite extends Rectangle {
@@ -13,6 +14,8 @@ public class Sprite extends Rectangle {
     private double velocityY;
     private double width;
     private double height;
+    private boolean topdown;
+    private boolean leftrigt;
 
     public Sprite()
     {
@@ -20,6 +23,8 @@ public class Sprite extends Rectangle {
         positionY = 0;
         velocityX = 0;
         velocityY = 0;
+        topdown = false;
+        leftrigt = true;
     }
 
     public void setImage(Image i)
@@ -43,10 +48,34 @@ public class Sprite extends Rectangle {
         return positionY;
     }
 
+    public void setPositionX(double positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(double positionY) {
+        this.positionY = positionY;
+    }
+
     public void setPosition(double x, double y)
     {
         positionX = x;
         positionY = y;
+    }
+
+    public boolean isTopdown() {
+        return topdown;
+    }
+
+    public void setTopdown(boolean topdown) {
+        this.topdown = topdown;
+    }
+
+    public boolean isLeftrigt() {
+        return leftrigt;
+    }
+
+    public void setLeftrigt(boolean leftrigt) {
+        this.leftrigt = leftrigt;
     }
 
     public void setVelocity(double x, double y)
@@ -66,6 +95,7 @@ public class Sprite extends Rectangle {
         positionX += velocityX * time;
         positionY += velocityY * time;
     }
+
 
     public void render(GraphicsContext gc)
     {
