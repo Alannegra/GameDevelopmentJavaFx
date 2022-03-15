@@ -1,7 +1,9 @@
 package com.alan.gamedevelopmentjavafx;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
 import javafx.animation.RotateTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
@@ -28,9 +30,19 @@ import java.util.concurrent.TimeUnit;
 
 public class Keyboard extends Application {
 
+    double refresh = 20;//ms
+    double addBallDuration = 5000;//ms
+    double temp = 0;
+
+    ArrayList<Sprite> spawner = new ArrayList<>();
+
     public void start(Stage theStage)
     {
         theStage.setTitle( "World of Warcraft" );
+
+        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(refresh), e->moveBalls()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
         Group root = new Group();
         Scene theScene = new Scene( root );
@@ -72,9 +84,11 @@ public class Keyboard extends Application {
 
         Image left = new Image( "Garrosh.gif" );
         Image right = new Image( "Garroshinvert.gif" );
-        Image axe = new Image( "Gorehowl.png" );
+        Image axe = new Image( "Gorehowl.png", 375 , 201 , false,false);
+
         Image dehaka = new Image("space.png");
         Sprite badguy = new Sprite();
+
         Sprite weapon = new Sprite();
         weapon.setImage(axe);
         badguy.setImage(dehaka);
@@ -118,9 +132,9 @@ public class Keyboard extends Application {
                     //rotate.setAngle(20);
                     //rotate.setPivotX(150);
                     //rotate.setPivotY(225);
-                    weapon.getTransforms().add(rotate);
+                    //weapon.getTransforms().add(rotate);
 
-                    //weapon.setPosition(x + axex,y + 10);
+                    weapon.setPosition(x + axex,y + 10);
                     weapon.render(gc);
 
                     if(axex == 100)axex=0;
@@ -135,6 +149,13 @@ public class Keyboard extends Application {
                 yrandom = randomy();
 
 
+                for (Sprite s:spawner) {
+                    //System.out.println(s.getLayoutX() + " " + s.getLayoutY());
+
+                    s.setPosition(randomxSpawner((int) s.getPositionX()),randomySpawner((int) s.getPositionY()));
+
+                    s.render(gc);
+                }
                 if(muerto){
                     badguy.setPosition(xrandom ,yrandom);
                     badguy.render(gc);
@@ -223,7 +244,6 @@ public class Keyboard extends Application {
 
                 }
 
-
                 int randomx (){
                 if(xrandom == 1750 ){
                     rightleft=false;
@@ -241,17 +261,49 @@ public class Keyboard extends Application {
                 if(topdown)return yrandom+5;
                 else return yrandom-5;
 
+            }
 
+            int randomxSpawner (int x){
+                if(x == 1750 ){
+                    rightleft=false;
+                }
+                else if(x == -50 )rightleft=true;
+                if(rightleft)return x+5;
+                else return x-5;
+
+            }
+            int randomySpawner (int y){
+                if(y == 725 ){
+                    topdown=false;
+                }
+                else if(yrandom == -50 )topdown=true;
+                if(topdown)return y+5;
+                else return y-5;
 
             }
 
 
-
         }.start();
-
-
-
 
         theStage.show();
     }
+
+    private void moveBalls() {
+        temp = temp + refresh;
+        if (temp > addBallDuration) {
+            temp = 0;
+            System.out.println("Hola");
+
+            addVillain();
+        }
+    }
+    private void addVillain(){
+        Sprite sprite = new Sprite();
+        sprite.setImage("space.png");
+        double x = (Math.random() * 1750)+1;
+        double y = (Math.random() * 725)+1;
+        sprite.setPosition(x,y);
+        spawner.add(sprite);
+    }
+
 }

@@ -35,6 +35,14 @@ public class Sprite extends Rectangle {
         setImage(i);
     }
 
+    public double getPositionX() {
+        return positionX;
+    }
+
+    public double getPositionY() {
+        return positionY;
+    }
+
     public void setPosition(double x, double y)
     {
         positionX = x;

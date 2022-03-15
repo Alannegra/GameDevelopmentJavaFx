@@ -81,4 +81,14 @@ public class Diana extends Application {
         theStage.show();
     }
 
+
+    /*private void addVillain(){
+        Sprite sprite = new Sprite();
+        sprite.setImage("space.png");
+        double x = (Math.random() * 500)+1;
+        double y = (Math.random() * 500)+1;
+        sprite.setPosition(x,y);
+        spawner.add(sprite);
+    }*/
+
 }
