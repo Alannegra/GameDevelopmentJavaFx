@@ -38,7 +38,10 @@ public class Keyboard extends Application {
     double temp = 0;
     double temp2 = 0;
     boolean invulnerabilidad = false;
-
+    int hearthcounter = 3;
+    char letra = 65;
+    int arcadeTurno = 1;
+    boolean arcadeBoolean = true;
     ArrayList<Sprite> spawner = new ArrayList<>();
 
     public void start(Stage theStage)
@@ -60,7 +63,10 @@ public class Keyboard extends Application {
         theStage.setScene( theScene );
 
         Canvas canvas = new Canvas( 1980, 1080 );
+        Canvas canvas2 = new Canvas(1980, 1080);
+
         root.getChildren().add( canvas );
+        root.getChildren().add( canvas2 );
 
         final int[] points = {0};
 
@@ -90,9 +96,10 @@ public class Keyboard extends Application {
                 });
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
+        GraphicsContext gc2 = canvas2.getGraphicsContext2D();
 
         Image background = new Image( "BackgroundOrgrimmar.jpg" );
-        ImageView imageView = new ImageView("BackgroundOrgrimmar.jpg");
+
 
 
         Image left = new Image( "Garrosh.gif" );
@@ -114,6 +121,10 @@ public class Keyboard extends Application {
         gc.setStroke( Color.BLACK );
         gc.setLineWidth(1);
 
+        Font theFont2 = Font.font( "Helvetica", FontWeight.BOLD, 54 );
+        gc2.setFont( theFont2 );
+        gc2.setStroke( Color.BLACK );
+        gc2.setLineWidth(1);
 
         /*Rotate rotate = new Rotate(180,100,100);
 
@@ -133,7 +144,7 @@ public class Keyboard extends Application {
             boolean rightleft = true;
             boolean topdown = true;
             boolean vivo = true;
-            int hearthcounter = 3;
+
             int opacity = 1;
             //Rotate rotate;
             public void handle(long currentNanoTime)
@@ -141,12 +152,12 @@ public class Keyboard extends Application {
 
                 // Clear the canvas
                 gc.clearRect(0, 0, 1980,1080);
+                gc2.clearRect(0, 0, 1980,1080);
 
                 gc.drawImage( background, 0, 0,1980,1080);
 
 
-
-                    gc.setEffect(new BoxBlur(opacity, opacity, 3));
+                gc.setEffect(new BoxBlur(opacity, opacity, 3));
 
 
 
@@ -182,7 +193,7 @@ public class Keyboard extends Application {
                     if(garrosh.intersects(s) && !invulnerabilidad){
 
                         if(hearthcounter !=0){
-                            opacity ++;
+                            opacity+=1.5*opacity;
                             hearthcounter--;
                             invulnerabilidad = true;
                             TimeInvulnerabilidad();
@@ -205,7 +216,7 @@ public class Keyboard extends Application {
                     //gc.drawImage(dehaka, xrandom ,yrandom);
                 }*/
 
-
+                //if(false){
                 if(hearthcounter != 0){
 
                     if(input.contains("F")){
@@ -229,6 +240,8 @@ public class Keyboard extends Application {
                     }else{
                         weapon.setPositionX(5000);
                         weapon.setPositionY(5000);
+
+
                     }
 
 
@@ -303,20 +316,72 @@ public class Keyboard extends Application {
                 else{
                     gc.drawImage( left, x, y );
                 }
+
+                    gc.setFill( Color.RED );
+                    String pointsText = "Points: " + points[0];
+                    gc.fillText( pointsText, 360, 36 );
+                    gc.strokeText( pointsText, 360, 36 );
+
+
+                    if(invulnerabilidad){
+                        gc.drawImage(earth,x + 100,y +100,200,200);
+                    }
+
                 }else{
                     weapon.setPositionX(5000);
                     weapon.setPositionY(5000);
+                    opacity = 100;
+
+                    gc2.setFill( Color.BLUE );
+                    String pointsText = "Points: " + (int)arcadeTurno;
+                    //String pointsText = "Points: " + points[0];
+                    gc2.fillText( pointsText, 900, 500 );
+                    gc2.strokeText( pointsText, 900, 500 );
+
+
+                    if (input.contains("ENTER")){
+                        if(arcadeBoolean)arcadeTurno++;
+                        arcadeBoolean = false;
+                    }
+
+                    if(arcadeTurno == 1){
+                        if (input.contains("UP")){
+                            if(letra ==90)letra-=26;
+                            letra += 1;
+                        }
+
+                        if (input.contains("DOWN")){
+                            if(letra ==65)letra+=26;
+                            letra --;
+                        }
+                    }
+
+                    if(arcadeTurno == 2){
+                        if (input.contains("UP")){
+                            if(letra ==90)letra-=26;
+                            letra += 1;
+                        }
+
+                        if (input.contains("DOWN")){
+                            if(letra ==65)letra+=26;
+                            letra --;
+                        }
+                    }
+
+
+
+
+                    String arcadeText = Character.toString(letra) ;
+
+                    gc2.setFill( Color.WHITE );
+                    gc2.fillText( arcadeText, 880, 560 );
+                    gc2.strokeText( arcadeText, 880, 560 );
+
+
+
                 }
 
-                gc.setFill( Color.RED );
-                String pointsText = "Points: " + points[0];
-                gc.fillText( pointsText, 360, 36 );
 
-                gc.strokeText( pointsText, 360, 36 );
-
-                if(invulnerabilidad){
-                    gc.drawImage(earth,x + 100,y +100,200,200);
-                }
 
                 }
 
@@ -401,7 +466,11 @@ public class Keyboard extends Application {
             double x = (Math.random() * 1750)+1600;
             double y = (Math.random() * 725)+1;
             sprite.setPosition(x,y);
+        if(hearthcounter  !=0){
             spawner.add(sprite);
+            }
+
+
         }else {
             Sprite sprite = new Sprite("1");
             sprite.setImage("space.png");
