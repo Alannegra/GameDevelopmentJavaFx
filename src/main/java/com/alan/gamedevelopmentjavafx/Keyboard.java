@@ -40,6 +40,7 @@ public class Keyboard extends Application {
     boolean invulnerabilidad = false;
     int hearthcounter = 3;
     char letra = 65;
+    char letra2 = 65;
     int arcadeTurno = 1;
     boolean arcadeBoolean = true;
     ArrayList<Sprite> spawner = new ArrayList<>();
@@ -216,8 +217,8 @@ public class Keyboard extends Application {
                     //gc.drawImage(dehaka, xrandom ,yrandom);
                 }*/
 
-                //if(false){
-                if(hearthcounter != 0){
+                if(false){
+                //if(hearthcounter != 0){
 
                     if(input.contains("F")){
                         //gc.drawImage( axe, x + axex, y + 10 );
@@ -358,25 +359,27 @@ public class Keyboard extends Application {
 
                     if(arcadeTurno == 2){
                         if (input.contains("UP")){
-                            if(letra ==90)letra-=26;
-                            letra += 1;
+                            if(letra2 ==90)letra2-=26;
+                            letra2 += 1;
                         }
 
                         if (input.contains("DOWN")){
-                            if(letra ==65)letra+=26;
-                            letra --;
+                            if(letra2 ==65)letra2+=26;
+                            letra2 --;
                         }
                     }
 
 
 
 
-                    String arcadeText = Character.toString(letra) ;
+                    String arcadeTextLETRA1 = Character.toString(letra) ;
+                    String arcadeTextLETRA2 = Character.toString(letra2) ;
 
                     gc2.setFill( Color.WHITE );
-                    gc2.fillText( arcadeText, 880, 560 );
-                    gc2.strokeText( arcadeText, 880, 560 );
-
+                    gc2.fillText( arcadeTextLETRA1, 880, 560 );
+                    gc2.strokeText( arcadeTextLETRA1, 880, 560 );
+                    gc2.fillText( arcadeTextLETRA2, 900, 560 );
+                    gc2.strokeText( arcadeTextLETRA2, 900, 560 );
 
 
                 }
