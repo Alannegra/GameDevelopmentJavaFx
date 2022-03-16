@@ -26,6 +26,25 @@ public class Sprite extends Rectangle {
         topdown = false;
         leftrigt = true;
     }
+    public Sprite(String a)
+    {
+        positionX = 0;
+        positionY = 0;
+        velocityX = 0;
+        velocityY = 0;
+        topdown = false;
+        leftrigt = true;
+    }
+
+    public Sprite(int sa)
+    {
+        positionX = 0;
+        positionY = 0;
+        velocityX = 0;
+        velocityY = 0;
+        topdown = true;
+        leftrigt = true;
+    }
 
     public void setImage(Image i)
     {

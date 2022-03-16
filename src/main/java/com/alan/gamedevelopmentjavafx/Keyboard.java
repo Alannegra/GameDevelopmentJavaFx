@@ -12,7 +12,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -31,8 +33,10 @@ import java.util.concurrent.TimeUnit;
 public class Keyboard extends Application {
 
     double refresh = 20;//ms
-    double addBallDuration = 1000;//ms
+    double addBallDuration = 5000;//ms
+    double addinvulnerabilidad = 5000;//ms
     double temp = 0;
+    double temp2 = 0;
     boolean invulnerabilidad = false;
 
     ArrayList<Sprite> spawner = new ArrayList<>();
@@ -44,6 +48,12 @@ public class Keyboard extends Application {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(refresh), e->moveBalls()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+
+        //if(invulnerabilidad){
+        Timeline timeline2 = new Timeline(new KeyFrame(Duration.millis(refresh), e->TimeInvulnerabilidad()));
+        timeline2.setCycleCount(Timeline.INDEFINITE);
+        timeline2.play();
+        //}
 
         Group root = new Group();
         Scene theScene = new Scene( root );
@@ -82,6 +92,8 @@ public class Keyboard extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         Image background = new Image( "BackgroundOrgrimmar.jpg" );
+        ImageView imageView = new ImageView("BackgroundOrgrimmar.jpg");
+
 
         Image left = new Image( "Garrosh.gif" );
         Image right = new Image( "Garroshinvert.gif" );
@@ -91,9 +103,10 @@ public class Keyboard extends Application {
         Sprite garrosh = new Sprite();
         garrosh.setImage(left);
 
+
+
         Sprite weapon = new Sprite();
         weapon.setImage(axe);
-
 
 
         Font theFont = Font.font( "Helvetica", FontWeight.BOLD, 24 );
@@ -102,11 +115,11 @@ public class Keyboard extends Application {
         gc.setLineWidth(1);
 
 
-        Rotate rotate = new Rotate(180,100,100);
+        /*Rotate rotate = new Rotate(180,100,100);
 
         rotate.setAngle(20);
         rotate.setPivotX(150);
-        rotate.setPivotY(225);
+        rotate.setPivotY(225);*/
 
         new AnimationTimer()
         {
@@ -121,6 +134,7 @@ public class Keyboard extends Application {
             boolean topdown = true;
             boolean vivo = true;
             int hearthcounter = 3;
+            int opacity = 1;
             //Rotate rotate;
             public void handle(long currentNanoTime)
             {
@@ -131,15 +145,20 @@ public class Keyboard extends Application {
                 gc.drawImage( background, 0, 0,1980,1080);
 
 
+
+                    gc.setEffect(new BoxBlur(opacity, opacity, 3));
+
+
+
                 if(hearthcounter == 3){
-                    gc.drawImage(hearth, 5,0,100,100);
-                    gc.drawImage(hearth, 80,0,100,100);
-                    gc.drawImage(hearth, 160,0,100,100);
+                    gc.drawImage(hearth, 25,0,100,100);
+                    gc.drawImage(hearth, 105,0,100,100);
+                    gc.drawImage(hearth, 185,0,100,100);
                 }else if (hearthcounter == 2){
-                    gc.drawImage(hearth, 5,0,100,100);
-                    gc.drawImage(hearth, 80,0,100,100);
+                    gc.drawImage(hearth, 25,0,100,100);
+                    gc.drawImage(hearth, 105,0,100,100);
                 }else if (hearthcounter == 1){
-                    gc.drawImage(hearth, 5,0,100,100);
+                    gc.drawImage(hearth, 25,0,100,100);
                 }else{
 
                 }
@@ -156,14 +175,17 @@ public class Keyboard extends Application {
 
                     if (weapon.intersects(s)){
                         spawner.remove(s);
+                        addBallDuration-=100;
                         points[0]++;
                     }
 
                     if(garrosh.intersects(s) && !invulnerabilidad){
 
                         if(hearthcounter !=0){
+                            opacity ++;
                             hearthcounter--;
                             invulnerabilidad = true;
+                            TimeInvulnerabilidad();
                         }else{
                             garrosh.setPosition(5000,5000);
                         }
@@ -191,7 +213,7 @@ public class Keyboard extends Application {
 
                         //gc.rotate(weapon.getBoundary().getHeight()+x);
 
-                        weapon.getTransforms().addAll(rotate);
+                        //weapon.getTransforms().addAll(rotate);
 
                         weapon.setPosition(x + axex,y + 10);
                         weapon.render(gc);
@@ -358,16 +380,40 @@ public class Keyboard extends Application {
             temp = 0;
             //System.out.println("Hola");
             addVillain();
+
+        }
+    }
+
+    private void TimeInvulnerabilidad() {
+        temp2 = temp2 + refresh;
+        if (temp2 > addinvulnerabilidad) {
+            temp2 = 0;
+            //System.out.println("Hola");
             invulnerabilidad = false;
         }
     }
+
     private void addVillain(){
-        Sprite sprite = new Sprite();
-        sprite.setImage("space.png");
-        double x = (Math.random() * 1750)+1600;
-        double y = (Math.random() * 725)+1;
-        sprite.setPosition(x,y);
-        spawner.add(sprite);
+
+        if(spawner.size() % 2 == 0){
+            Sprite sprite = new Sprite(1);
+            sprite.setImage("space.png");
+            double x = (Math.random() * 1750)+1600;
+            double y = (Math.random() * 725)+1;
+            sprite.setPosition(x,y);
+            spawner.add(sprite);
+        }else {
+            Sprite sprite = new Sprite("1");
+            sprite.setImage("space.png");
+            double x = (Math.random() * 1750)+1600;
+            double y = (Math.random() * 725)+1;
+            sprite.setPosition(x,y);
+            spawner.add(sprite);
+        }
+
+
+
+
     }
 
 }
