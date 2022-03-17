@@ -26,11 +26,30 @@ import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Keyboard extends Application {
+
+    class Score {
+        String nombre;
+        int puntuacion;
+
+        public Score(String nombre, int puntuacion) {
+            this.nombre = nombre;
+            this.puntuacion = puntuacion;
+        }
+    }
+
+    List<Score> scoreList = new ArrayList<>();
+    List<Score> ordenador = new ArrayList<>();
 
     double refresh = 20;//ms
     double addBallDuration = 5000;//ms
@@ -41,7 +60,9 @@ public class Keyboard extends Application {
     int hearthcounter = 3;
     char letra = 65;
     char letra2 = 65;
+    char letra3 = 65;
     int arcadeTurno = 1;
+
     boolean arcadeBoolean = true;
     ArrayList<Sprite> spawner = new ArrayList<>();
 
@@ -217,8 +238,8 @@ public class Keyboard extends Application {
                     //gc.drawImage(dehaka, xrandom ,yrandom);
                 }*/
 
-                if(false){
-                //if(hearthcounter != 0){
+                //if(false){
+                if(hearthcounter != 0){
 
                     if(input.contains("F")){
                         //gc.drawImage( axe, x + axex, y + 10 );
@@ -334,7 +355,7 @@ public class Keyboard extends Application {
                     opacity = 100;
 
                     gc2.setFill( Color.BLUE );
-                    String pointsText = "Points: " + (int)arcadeTurno;
+                    String pointsText = "Points: " + points[0];
                     //String pointsText = "Points: " + points[0];
                     gc2.fillText( pointsText, 900, 500 );
                     gc2.strokeText( pointsText, 900, 500 );
@@ -342,7 +363,7 @@ public class Keyboard extends Application {
 
                     if (input.contains("ENTER")){
                         if(arcadeBoolean)arcadeTurno++;
-                        arcadeBoolean = false;
+                        //arcadeBoolean = false;
                     }
 
                     if(arcadeTurno == 1){
@@ -369,17 +390,42 @@ public class Keyboard extends Application {
                         }
                     }
 
+                    if(arcadeTurno == 3){
+                        if (input.contains("UP")){
+                            if(letra3 ==90)letra3-=26;
+                            letra3 += 1;
+                        }
+
+                        if (input.contains("DOWN")){
+                            if(letra3 ==65)letra3+=26;
+                            letra3 --;
+                        }
+                    }
+
+                    if(arcadeTurno >= 4){
+                        if(arcadeBoolean)guardarPuntuacion(points[0]);
+                        arcadeBoolean=false;
+
+                        for (int i = 2; i >= 0; i--) {
+                            gc2.fillText( scoreList.get(i).nombre + " " + scoreList.get(i).puntuacion, 1300, 360 + ((i+1) * 60) );
+                        }
+
+                    }
+
 
 
 
                     String arcadeTextLETRA1 = Character.toString(letra) ;
                     String arcadeTextLETRA2 = Character.toString(letra2) ;
+                    String arcadeTextLETRA3 = Character.toString(letra3) ;
 
                     gc2.setFill( Color.WHITE );
                     gc2.fillText( arcadeTextLETRA1, 880, 560 );
                     gc2.strokeText( arcadeTextLETRA1, 880, 560 );
-                    gc2.fillText( arcadeTextLETRA2, 900, 560 );
-                    gc2.strokeText( arcadeTextLETRA2, 900, 560 );
+                    gc2.fillText( arcadeTextLETRA2, 990, 560 );
+                    gc2.strokeText( arcadeTextLETRA2, 990, 560 );
+                    gc2.fillText( arcadeTextLETRA3, 1100, 560 );
+                    gc2.strokeText( arcadeTextLETRA3, 1100, 560 );
 
 
                 }
@@ -462,7 +508,6 @@ public class Keyboard extends Application {
     }
 
     private void addVillain(){
-
         if(spawner.size() % 2 == 0){
             Sprite sprite = new Sprite(1);
             sprite.setImage("space.png");
@@ -472,8 +517,6 @@ public class Keyboard extends Application {
         if(hearthcounter  !=0){
             spawner.add(sprite);
             }
-
-
         }else {
             Sprite sprite = new Sprite("1");
             sprite.setImage("space.png");
@@ -482,10 +525,49 @@ public class Keyboard extends Application {
             sprite.setPosition(x,y);
             spawner.add(sprite);
         }
+    }
+
+    void guardarPuntuacion(int puntuacion) {
+        try {
+            FileWriter fileWriter = new FileWriter("scores.txt", true);
+            fileWriter.write(""+ letra + letra2+ letra3 + "," + puntuacion + "\n");
+            fileWriter.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        leerPuntuaciones();
+    }
+    void leerPuntuaciones() {
+
+        try {
+            Scanner scanner = new Scanner(new File("scores.txt"));
+            scanner.useDelimiter(",|\n");
+
+            while (scanner.hasNext()) {
+                String nombre = scanner.next();
+                int puntos = scanner.nextInt();
+                //scoreList.add(new Score(nombre, puntos));
+                ordenador.add(new Score(nombre, puntos));
+            }
 
 
+            while(ordenador.size() > 0){
+                int posNotaMax = 0;
+                for (int i = 0; i < ordenador.size(); i++) {
+                    if(ordenador.get(i).puntuacion > ordenador.get(posNotaMax).puntuacion){
+                        posNotaMax = i;
+                    }
 
+                }
+                scoreList.add(ordenador.get(posNotaMax));
+                ordenador.remove(posNotaMax);
 
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
 }
