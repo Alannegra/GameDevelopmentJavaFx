@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -138,6 +139,8 @@ public class Keyboard extends Application {
         Image earth = new Image("bubble.png");
         Sprite garrosh = new Sprite();
 
+        garrosh.setImage(right);
+
         Sprite weapon = new Sprite();
         weapon.setImage(axe);
 
@@ -190,11 +193,7 @@ public class Keyboard extends Application {
                     gc.drawImage( background, 0, 0,1980,1080);
                 }
 
-
-
                 gc.setEffect(new BoxBlur(opacity, opacity, 3));
-
-
 
                 if(hearthcounter == 3){
                     gc.drawImage(hearth, 25,0,100,100);
@@ -251,9 +250,7 @@ public class Keyboard extends Application {
                     }
 
                     if(garrosh.intersects(s) && !invulnerabilidad){
-
                         if(hearthcounter !=0){
-
                             hearthcounter--;
                             invulnerabilidad = true;
                             TimeInvulnerabilidad();
@@ -326,17 +323,17 @@ public class Keyboard extends Application {
                         weapon2.setPositionX(5000);
                         weapon2.setPositionY(5000);
 
-
                     }
 
 
-                    if(x >= 1600 ) x-=1600;
+                    if(x >= 1600 ) x=1600;
                     else if(y >= 725) y=725;
                     else if(x <= -50 ) x=-50;
                     else if(y <= -50) y=-50;
 
 
-                    //System.out.println("X: " + x + "Y: " + y);
+
+
 
                 if (input.contains("RIGHT") && input.contains("UP")){
                     x+=velocity;
@@ -409,6 +406,7 @@ public class Keyboard extends Application {
 
 
                     if(invulnerabilidad){
+
                         gc.drawImage(earth,x + 100,y +100,200,200);
                         opacity=4;
                     }else {
@@ -582,7 +580,7 @@ public class Keyboard extends Application {
         temp = temp + refresh;
         if (temp > addBallDuration) {
             temp = 0;
-            //System.out.println("Hola");
+
             addVillain();
             if(infernaldoor){
                 addVillain2();
@@ -595,7 +593,7 @@ public class Keyboard extends Application {
         temp2 = temp2 + refresh;
         if (temp2 > addinvulnerabilidad) {
             temp2 = 0;
-            //System.out.println("Hola");
+
             invulnerabilidad = false;
         }
    }
