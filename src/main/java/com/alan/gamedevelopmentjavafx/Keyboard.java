@@ -52,7 +52,7 @@ public class Keyboard extends Application {
     List<Score> ordenador = new ArrayList<>();
 
     double refresh = 20;//ms
-    double addBallDuration = 5000;//ms
+    double addBallDuration = 2500;//ms
     double addinvulnerabilidad = 5000;//ms
     double temp = 0;
     double temp2 = 0;
@@ -62,6 +62,9 @@ public class Keyboard extends Application {
     char letra2 = 65;
     char letra3 = 65;
     int arcadeTurno = 1;
+    boolean infernaldoor = false;
+    int opacity = 1;
+    int velocity = 5;
 
     boolean arcadeBoolean = true;
     ArrayList<Sprite> spawner = new ArrayList<>();
@@ -121,12 +124,13 @@ public class Keyboard extends Application {
         GraphicsContext gc2 = canvas2.getGraphicsContext2D();
 
         Image background = new Image( "BackgroundOrgrimmar.jpg" );
-
+        Image background2 = new Image( "Zerg.jpg" );
 
 
         Image left = new Image( "Garrosh.gif" );
         Image right = new Image( "Garroshinvert.gif" );
         Image axe = new Image( "Gorehowl.png", 375 , 201 , false,false);
+        Image axe2 = new Image( "Gorehowl2.png", 375 , 201 , false,false);
         Image hearth = new Image("hearth.png");
         Image earth = new Image("bubble.png");
         Sprite garrosh = new Sprite();
@@ -136,6 +140,9 @@ public class Keyboard extends Application {
 
         Sprite weapon = new Sprite();
         weapon.setImage(axe);
+
+        Sprite weapon2 = new Sprite();
+        weapon2.setImage(axe2);
 
 
         Font theFont = Font.font( "Helvetica", FontWeight.BOLD, 24 );
@@ -161,13 +168,14 @@ public class Keyboard extends Application {
             int x = 0;
             int y = 0;
             int axex= 0;
+            int axex2= 0;
             int xrandom = 0;
             int yrandom = 0;
             boolean rightleft = true;
             boolean topdown = true;
             boolean vivo = true;
 
-            int opacity = 1;
+
             //Rotate rotate;
             public void handle(long currentNanoTime)
             {
@@ -176,7 +184,12 @@ public class Keyboard extends Application {
                 gc.clearRect(0, 0, 1980,1080);
                 gc2.clearRect(0, 0, 1980,1080);
 
-                gc.drawImage( background, 0, 0,1980,1080);
+                if(infernaldoor){
+                    gc.drawImage( background2, 0, 0,1980,1080);
+                }else {
+                    gc.drawImage( background, 0, 0,1980,1080);
+                }
+
 
 
                 gc.setEffect(new BoxBlur(opacity, opacity, 3));
@@ -208,14 +221,39 @@ public class Keyboard extends Application {
 
                     if (weapon.intersects(s)){
                         spawner.remove(s);
+                        if(velocity == 20){
+
+                        }else {
+                            velocity ++;
+                        }
+
+                        if(addBallDuration == 200){
+
+                            if(infernaldoor){
+                                infernaldoor= false;
+                            }else{
+                                infernaldoor= true;
+                            }
+                            addBallDuration = 2500;
+
+
+                        }
+
                         addBallDuration-=100;
+
+                        points[0]++;
+                    }
+
+                    if (weapon2.intersects(s)){
+                        spawner.remove(s);
+
                         points[0]++;
                     }
 
                     if(garrosh.intersects(s) && !invulnerabilidad){
 
                         if(hearthcounter !=0){
-                            opacity+=1.5*opacity;
+
                             hearthcounter--;
                             invulnerabilidad = true;
                             TimeInvulnerabilidad();
@@ -241,7 +279,7 @@ public class Keyboard extends Application {
                 //if(false){
                 if(hearthcounter != 0){
 
-                    if(input.contains("F")){
+                    if(input.contains("G")){
                         //gc.drawImage( axe, x + axex, y + 10 );
 
                         //gc.rotate(weapon.getBoundary().getHeight()+x);
@@ -266,8 +304,33 @@ public class Keyboard extends Application {
 
                     }
 
+                    if(input.contains("F")){
+                        //gc.drawImage( axe, x + axex, y + 10 );
 
-                if(x == 1600 ) x-=5;
+                        //gc.rotate(weapon.getBoundary().getHeight()+x);
+
+                        //weapon.getTransforms().addAll(rotate);
+
+                        weapon2.setPosition(x + axex2,y + 10);
+                        weapon2.render(gc);
+
+                        if(axex2 == -100)axex2=0;
+                        axex2-=5;
+
+                   /* if (weapon.intersects(badguy)){
+                        muerto = false;
+                        points[0]++;
+                    }*/
+
+                    }else{
+                        weapon2.setPositionX(5000);
+                        weapon2.setPositionY(5000);
+
+
+                    }
+
+
+                    if(x == 1600 ) x-=5;
                 else if(y == 725) y-=5;
                 else if(x == -50 ) x+=5;
                 else if(y == -50) y+=5;
@@ -276,36 +339,36 @@ public class Keyboard extends Application {
                     //System.out.println("X: " + x + "Y: " + y);
 
                 if (input.contains("RIGHT") && input.contains("UP")){
-                    x+=5;
-                    y-=5;
+                    x+=velocity;
+                    y-=velocity;
                     gc.drawImage( right, x, y );
                     derechaizquietda = true;
                 }else
                 if (input.contains("RIGHT") && input.contains("DOWN")){
-                    x+=5;
-                    y+=5;
+                    x+=velocity;
+                    y+=velocity;
                     gc.drawImage( right, x, y );
                     derechaizquietda = true;
                 }else
                 if (input.contains("LEFT") && input.contains("UP")){
-                    x-=5;
-                    y-=5;
+                    x-=velocity;
+                    y-=velocity;
                     gc.drawImage( left, x, y );
                     derechaizquietda = false;
                 }else
                 if (input.contains("LEFT") && input.contains("DOWN")){
-                    x-=5;
-                    y+=5;
+                    x-=velocity;
+                    y+=velocity;
                     gc.drawImage( left, x, y );
                     derechaizquietda = false;
                 }else
                 if (input.contains("RIGHT")){
-                    x+=5;
+                    x+=velocity;
                     gc.drawImage( right, x, y );
                     derechaizquietda = true;
                 }else
                 if (input.contains("UP")){
-                    y-=5;
+                    y-=velocity;
                     if(derechaizquietda){
                         gc.drawImage( right, x, y );
                     }
@@ -314,7 +377,7 @@ public class Keyboard extends Application {
                     }
                 }else
                 if (input.contains("DOWN")){
-                    y+=5;
+                    y+=velocity;
                     if(derechaizquietda){
                         gc.drawImage( right, x, y );
                     }
@@ -323,7 +386,7 @@ public class Keyboard extends Application {
                     }
                 }else
                 if (input.contains("LEFT")){
-                    x-=5;
+                    x-=velocity;
                     gc.drawImage( left, x, y );
                     derechaizquietda = false;
                 }
@@ -347,11 +410,16 @@ public class Keyboard extends Application {
 
                     if(invulnerabilidad){
                         gc.drawImage(earth,x + 100,y +100,200,200);
+                        opacity=4;
+                    }else {
+                        opacity=1;
                     }
 
                 }else{
                     weapon.setPositionX(5000);
                     weapon.setPositionY(5000);
+                    weapon2.setPositionX(5000);
+                    weapon2.setPositionY(5000);
                     opacity = 100;
 
                     gc2.setFill( Color.BLUE );
@@ -363,6 +431,10 @@ public class Keyboard extends Application {
 
                     if (input.contains("ENTER")){
                         if(arcadeBoolean)arcadeTurno++;
+                        if(arcadeTurno == 20){
+                            defaultoptions();
+                            defaultoptions2();
+                        }
                         //arcadeBoolean = false;
                     }
 
@@ -404,15 +476,13 @@ public class Keyboard extends Application {
 
                     if(arcadeTurno >= 4){
                         if(arcadeBoolean)guardarPuntuacion(points[0]);
-                        arcadeBoolean=false;
+                        //arcadeBoolean=false;
 
                         for (int i = 2; i >= 0; i--) {
                             gc2.fillText( scoreList.get(i).nombre + " " + scoreList.get(i).puntuacion, 1300, 360 + ((i+1) * 60) );
                         }
 
                     }
-
-
 
 
                     String arcadeTextLETRA1 = Character.toString(letra) ;
@@ -427,10 +497,7 @@ public class Keyboard extends Application {
                     gc2.fillText( arcadeTextLETRA3, 1100, 560 );
                     gc2.strokeText( arcadeTextLETRA3, 1100, 560 );
 
-
                 }
-
-
 
                 }
 
@@ -481,6 +548,21 @@ public class Keyboard extends Application {
 
             }
 
+            void defaultoptions2(){
+               derechaizquietda = false;
+                 x = 0;
+                 y = 0;
+                 axex= 0;
+                 axex2= 0;
+                 xrandom = 0;
+                 yrandom = 0;
+                 rightleft = true;
+                 topdown = true;
+                 vivo = true;
+                 points[0] = 0;
+
+            }
+
 
 
         }.start();
@@ -494,6 +576,9 @@ public class Keyboard extends Application {
             temp = 0;
             //System.out.println("Hola");
             addVillain();
+            if(infernaldoor){
+                addVillain2();
+            }
 
         }
     }
@@ -521,6 +606,26 @@ public class Keyboard extends Application {
             Sprite sprite = new Sprite("1");
             sprite.setImage("space.png");
             double x = (Math.random() * 1750)+1600;
+            double y = (Math.random() * 725)+1;
+            sprite.setPosition(x,y);
+            spawner.add(sprite);
+        }
+    }
+
+    private void addVillain2(){
+        if(spawner.size() % 2 == 0){
+            Sprite sprite = new Sprite(1);
+            sprite.setImage("space2.png");
+            double x = (Math.random() * 1750)-1600;
+            double y = (Math.random() * 725)+1;
+            sprite.setPosition(x,y);
+            if(hearthcounter  !=0){
+                spawner.add(sprite);
+            }
+        }else {
+            Sprite sprite = new Sprite("1");
+            sprite.setImage("space2.png");
+            double x = (Math.random() * 1750)-1600;
             double y = (Math.random() * 725)+1;
             sprite.setPosition(x,y);
             spawner.add(sprite);
@@ -568,6 +673,28 @@ public class Keyboard extends Application {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    void defaultoptions(){
+        refresh = 20;//ms
+        addBallDuration = 5000;//ms
+        addinvulnerabilidad = 5000;//ms
+        temp = 0;
+        temp2 = 0;
+        invulnerabilidad = false;
+        hearthcounter = 3;
+        letra = 65;
+        letra2 = 65;
+        letra3 = 65;
+        arcadeTurno = 1;
+        infernaldoor = false;
+        opacity = 1;
+        velocity = 5;
+
+        scoreList = new ArrayList<>();
+        ordenador = new ArrayList<>();
+        arcadeBoolean = true;
+        spawner = new ArrayList<>();
     }
 
 }
