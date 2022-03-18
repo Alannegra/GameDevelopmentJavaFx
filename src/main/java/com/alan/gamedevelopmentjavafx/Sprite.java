@@ -136,4 +136,6 @@ public class Sprite extends Rectangle {
         return " Position: [" + positionX + "," + positionY + "]"
                 + " Velocity: [" + velocityX + "," + velocityY + "]";
     }
+
+
 }

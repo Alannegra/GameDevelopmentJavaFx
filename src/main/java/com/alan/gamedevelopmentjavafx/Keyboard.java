@@ -17,6 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -65,6 +66,7 @@ public class Keyboard extends Application {
     boolean infernaldoor = false;
     int opacity = 1;
     int velocity = 5;
+    boolean teclapresionada = true;
 
     boolean arcadeBoolean = true;
     ArrayList<Sprite> spawner = new ArrayList<>();
@@ -102,11 +104,11 @@ public class Keyboard extends Application {
                 {
                     public void handle(KeyEvent e)
                     {
-                        String code = e.getCode().toString();
 
+                        String code = e.getCode().toString();
                         // only add once... prevent duplicates
-                        if ( !input.contains(code) )
-                            input.add( code );
+                            if ( !input.contains(code) ) input.add( code );
+
                     }
                 });
 
@@ -117,6 +119,7 @@ public class Keyboard extends Application {
                     {
                         String code = e.getCode().toString();
                         input.remove( code );
+                        teclapresionada = true;
                     }
                 });
 
@@ -127,16 +130,13 @@ public class Keyboard extends Application {
         Image background2 = new Image( "Zerg.jpg" );
 
 
-        Image left = new Image( "Garrosh.gif" );
+        Image left = new Image( "Garrosh.gif");
         Image right = new Image( "Garroshinvert.gif" );
         Image axe = new Image( "Gorehowl.png", 375 , 201 , false,false);
         Image axe2 = new Image( "Gorehowl2.png", 375 , 201 , false,false);
         Image hearth = new Image("hearth.png");
         Image earth = new Image("bubble.png");
         Sprite garrosh = new Sprite();
-        garrosh.setImage(left);
-
-
 
         Sprite weapon = new Sprite();
         weapon.setImage(axe);
@@ -429,48 +429,56 @@ public class Keyboard extends Application {
                     gc2.strokeText( pointsText, 900, 500 );
 
 
-                    if (input.contains("ENTER")){
+                    if (input.contains("ENTER") && teclapresionada){
                         if(arcadeBoolean)arcadeTurno++;
-                        if(arcadeTurno == 20){
+
+                        if(arcadeTurno == 5){
                             defaultoptions();
                             defaultoptions2();
                         }
                         //arcadeBoolean = false;
+                        teclapresionada = false;
                     }
 
                     if(arcadeTurno == 1){
-                        if (input.contains("UP")){
+                        if (input.contains("UP") && teclapresionada){
                             if(letra ==90)letra-=26;
                             letra += 1;
+                            teclapresionada = false;
                         }
 
-                        if (input.contains("DOWN")){
+                        if (input.contains("DOWN")&& teclapresionada){
                             if(letra ==65)letra+=26;
                             letra --;
+                            teclapresionada = false;
                         }
                     }
 
                     if(arcadeTurno == 2){
-                        if (input.contains("UP")){
+                        if (input.contains("UP") && teclapresionada){
                             if(letra2 ==90)letra2-=26;
                             letra2 += 1;
+                            teclapresionada = false;
                         }
 
-                        if (input.contains("DOWN")){
+                        if (input.contains("DOWN") && teclapresionada){
                             if(letra2 ==65)letra2+=26;
                             letra2 --;
+                            teclapresionada = false;
                         }
                     }
 
-                    if(arcadeTurno == 3){
-                        if (input.contains("UP")){
+                    if(arcadeTurno == 3 ){
+                        if (input.contains("UP") && teclapresionada){
                             if(letra3 ==90)letra3-=26;
                             letra3 += 1;
+                            teclapresionada = false;
                         }
 
-                        if (input.contains("DOWN")){
+                        if (input.contains("DOWN") && teclapresionada){
                             if(letra3 ==65)letra3+=26;
                             letra3 --;
+                            teclapresionada = false;
                         }
                     }
 
@@ -590,7 +598,7 @@ public class Keyboard extends Application {
             //System.out.println("Hola");
             invulnerabilidad = false;
         }
-    }
+   }
 
     private void addVillain(){
         if(spawner.size() % 2 == 0){
@@ -646,27 +654,27 @@ public class Keyboard extends Application {
     void leerPuntuaciones() {
 
         try {
-            Scanner scanner = new Scanner(new File("scores.txt"));
+            Scanner scanner = new Scanner(new File("sAcLoArNes.txt"));
             scanner.useDelimiter(",|\n");
 
             while (scanner.hasNext()) {
-                String nombre = scanner.next();
-                int puntos = scanner.nextInt();
+                String nombreA = scanner.next();
+                int puntosL = scanner.nextInt();
                 //scoreList.add(new Score(nombre, puntos));
-                ordenador.add(new Score(nombre, puntos));
+                ordenador.add(new Score(nombreA, puntosL));
             }
 
 
             while(ordenador.size() > 0){
-                int posNotaMax = 0;
+                int posNotaMaxA = 0;
                 for (int i = 0; i < ordenador.size(); i++) {
-                    if(ordenador.get(i).puntuacion > ordenador.get(posNotaMax).puntuacion){
-                        posNotaMax = i;
+                    if(ordenador.get(i).puntuacion > ordenador.get(posNotaMaxA).puntuacion){
+                        posNotaMaxA = i;
                     }
 
                 }
-                scoreList.add(ordenador.get(posNotaMax));
-                ordenador.remove(posNotaMax);
+                scoreList.add(ordenador.get(posNotaMaxA));
+                ordenador.remove(posNotaMaxA);
 
             }
 
