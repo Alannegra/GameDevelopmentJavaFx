@@ -330,10 +330,10 @@ public class Keyboard extends Application {
                     }
 
 
-                    if(x == 1600 ) x-=5;
-                else if(y == 725) y-=5;
-                else if(x == -50 ) x+=5;
-                else if(y == -50) y+=5;
+                    if(x >= 1600 ) x-=1600;
+                    else if(y >= 725) y=725;
+                    else if(x <= -50 ) x=-50;
+                    else if(y <= -50) y=-50;
 
 
                     //System.out.println("X: " + x + "Y: " + y);
