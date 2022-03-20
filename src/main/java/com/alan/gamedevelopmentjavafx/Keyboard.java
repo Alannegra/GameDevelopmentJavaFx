@@ -68,6 +68,10 @@ public class Keyboard extends Application {
     int opacity = 1;
     int velocity = 5;
     boolean teclapresionada = true;
+    boolean parimpar = true;
+    int w = 250;
+    int h = 250;
+    int enemyvelocity = 5;
 
     boolean arcadeBoolean = true;
     ArrayList<Sprite> spawner = new ArrayList<>();
@@ -508,39 +512,46 @@ public class Keyboard extends Application {
                 }
 
                 int randomx (){
+                double mathExperiment = (Math.random() * velocity)+velocity/2;
+                int math = (int)mathExperiment;
                 if(xrandom == 1750 ){
                     rightleft=false;
                 }
                  else if(xrandom == -50 )rightleft=true;
-                if(rightleft)return xrandom+5;
-                else return xrandom-5;
-
+                if(rightleft)return xrandom+math;
+                else return xrandom-math;
+                    //double x = (Math.random() * 1950)+1850;
                 }
             int randomy (){
+                double mathExperiment = (Math.random() * velocity)+velocity/2;
+                int math = (int)mathExperiment;
                 if(yrandom == 725 ){
                     topdown=false;
                 }
                 else if(yrandom == -50 )topdown=true;
-                if(topdown)return yrandom+5;
-                else return yrandom-5;
+                if(topdown)return yrandom+math;
+                else return yrandom-math;
 
             }
 
             int randomxSpawner (Sprite sprite){
-
-                if(sprite.getPositionX() >= 1750 ){
-                    sprite.setPositionX(1750);
+                double mathExperiment = (Math.random() * velocity)+velocity/2;
+                int math = (int)mathExperiment;
+                if(sprite.getPositionX() >= 1950 ){
+                    sprite.setPositionX(1950);
                     sprite.setLeftrigt(false);
                 }
                 else if(sprite.getPositionX() <= -50 ){
                     sprite.setPositionX(-50);
                     sprite.setLeftrigt(true);
                 }
-                if(sprite.isLeftrigt())return (int) (sprite.getPositionX()+5);
-                else return (int) (sprite.getPositionX()-5);
+                if(sprite.isLeftrigt())return (int) (sprite.getPositionX()+math);
+                else return (int) (sprite.getPositionX()-math);
 
             }
             int randomySpawner (Sprite sprite){
+                double mathExperiment = (Math.random() * velocity)+velocity/2;
+                int math = (int)mathExperiment;
                 if(sprite.getPositionY() >= 725 ){
                     sprite.setPositionX(725);
                     sprite.setTopdown(false);
@@ -549,8 +560,8 @@ public class Keyboard extends Application {
                     sprite.setPositionY(-50);
                     sprite.setTopdown(true);
                 }
-                if(sprite.isTopdown())return (int) (sprite.getPositionY()+5);
-                else return (int) (sprite.getPositionY()-5);
+                if(sprite.isTopdown())return (int) (sprite.getPositionY()+math);
+                else return (int) (sprite.getPositionY()-math);
 
             }
 
@@ -578,7 +589,7 @@ public class Keyboard extends Application {
 
     private void moveBalls() {
         temp = temp + refresh;
-        if (temp > addBallDuration) {
+        if (temp > addBallDuration && hearthcounter !=0) {
             temp = 0;
 
             addVillain();
@@ -599,22 +610,28 @@ public class Keyboard extends Application {
    }
 
     private void addVillain(){
-        if(spawner.size() % 2 == 0){
+
+        if(parimpar){
             Sprite sprite = new Sprite(1);
-            sprite.setImage("space.png");
-            double x = (Math.random() * 1750)+1600;
+            sprite.setImage("space.png", w, h);
+            double x = (Math.random() * 1950)+1850;
             double y = (Math.random() * 725)+1;
             sprite.setPosition(x,y);
         if(hearthcounter  !=0){
             spawner.add(sprite);
             }
+
+        parimpar= false;
         }else {
             Sprite sprite = new Sprite("1");
             sprite.setImage("space.png");
-            double x = (Math.random() * 1750)+1600;
+            double x = (Math.random() * 1950)+1850;
             double y = (Math.random() * 725)+1;
             sprite.setPosition(x,y);
             spawner.add(sprite);
+            parimpar = true;
+
+
         }
     }
 
@@ -622,7 +639,7 @@ public class Keyboard extends Application {
         if(spawner.size() % 2 == 0){
             Sprite sprite = new Sprite(1);
             sprite.setImage("space2.png");
-            double x = (Math.random() * 1750)-1600;
+            double x = (Math.random() * 1950)-1850;
             double y = (Math.random() * 725)+1;
             sprite.setPosition(x,y);
             if(hearthcounter  !=0){
@@ -631,7 +648,7 @@ public class Keyboard extends Application {
         }else {
             Sprite sprite = new Sprite("1");
             sprite.setImage("space2.png");
-            double x = (Math.random() * 1750)-1600;
+            double x = (Math.random() * 1950)-1850;
             double y = (Math.random() * 725)+1;
             sprite.setPosition(x,y);
             spawner.add(sprite);
@@ -640,7 +657,7 @@ public class Keyboard extends Application {
 
     void guardarPuntuacion(int puntuacion) {
         try {
-            FileWriter fileWriter = new FileWriter("scores.txt", true);
+            FileWriter fileWriter = new FileWriter("sAcLoArNes.txt", true);
             fileWriter.write(""+ letra + letra2+ letra3 + "," + puntuacion + "\n");
             fileWriter.close();
 

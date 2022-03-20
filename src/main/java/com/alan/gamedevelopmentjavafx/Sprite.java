@@ -59,6 +59,12 @@ public class Sprite extends Rectangle {
         setImage(i);
     }
 
+    public void setImage(String filename,int w, int h)
+    {
+        Image i = new Image(filename ,w , h , false,false);
+        setImage(i);
+    }
+
     public double getPositionX() {
         return positionX;
     }
