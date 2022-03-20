@@ -216,8 +216,8 @@ public class Keyboard extends Application {
                     garrosh.setPosition(x,y);
                 }
 
-                xrandom = randomx();
-                yrandom = randomy();
+                //xrandom = randomx();
+                //yrandom = randomy();
 
 
                 for (Sprite s:spawner) {
@@ -236,6 +236,7 @@ public class Keyboard extends Application {
                                 infernaldoor= false;
                             }else{
                                 infernaldoor= true;
+                                velocity = 5;
                             }
                             addBallDuration = 2500;
 
@@ -298,14 +299,7 @@ public class Keyboard extends Application {
                         points[0]++;
                     }*/
 
-                    }else{
-                        weapon.setPositionX(5000);
-                        weapon.setPositionY(5000);
-
-
-                    }
-
-                    if(input.contains("F")){
+                    }else if(input.contains("F")){
                         //gc.drawImage( axe, x + axex, y + 10 );
 
                         //gc.rotate(weapon.getBoundary().getHeight()+x);
@@ -323,11 +317,15 @@ public class Keyboard extends Application {
                         points[0]++;
                     }*/
 
-                    }else{
+                    } else{
+                        weapon.setPositionX(5000);
+                        weapon.setPositionY(5000);
                         weapon2.setPositionX(5000);
                         weapon2.setPositionY(5000);
 
                     }
+
+
 
 
                     if(x >= 1600 ) x=1600;
@@ -512,7 +510,7 @@ public class Keyboard extends Application {
                 }
 
                 int randomx (){
-                double mathExperiment = (Math.random() * velocity)+velocity/2;
+                double mathExperiment = (Math.random() * velocity)-velocity/2;
                 int math = (int)mathExperiment;
                 if(xrandom == 1750 ){
                     rightleft=false;
@@ -523,7 +521,7 @@ public class Keyboard extends Application {
                     //double x = (Math.random() * 1950)+1850;
                 }
             int randomy (){
-                double mathExperiment = (Math.random() * velocity)+velocity/2;
+                double mathExperiment = (Math.random() * velocity)-velocity/2;
                 int math = (int)mathExperiment;
                 if(yrandom == 725 ){
                     topdown=false;
@@ -535,8 +533,14 @@ public class Keyboard extends Application {
             }
 
             int randomxSpawner (Sprite sprite){
-                double mathExperiment = (Math.random() * velocity)+velocity/2;
+                double mathExperiment = (Math.random() * velocity)-velocity/2;
+
+                if(infernaldoor)mathExperiment = (Math.random() * velocity)+velocity/2;
+                else mathExperiment = (Math.random() * velocity)+velocity/2;
+
+
                 int math = (int)mathExperiment;
+
                 if(sprite.getPositionX() >= 1950 ){
                     sprite.setPositionX(1950);
                     sprite.setLeftrigt(false);
@@ -550,8 +554,12 @@ public class Keyboard extends Application {
 
             }
             int randomySpawner (Sprite sprite){
-                double mathExperiment = (Math.random() * velocity)+velocity/2;
+                double mathExperiment = (Math.random() * velocity)-velocity/2;
+
+                if(infernaldoor)mathExperiment = (Math.random() * velocity)-velocity/2;
+                else mathExperiment = (Math.random() * velocity)+velocity/2;
                 int math = (int)mathExperiment;
+
                 if(sprite.getPositionY() >= 725 ){
                     sprite.setPositionX(725);
                     sprite.setTopdown(false);
@@ -610,10 +618,13 @@ public class Keyboard extends Application {
    }
 
     private void addVillain(){
+        int tamaño = 10 * (velocity - 5);
+        double mathExperiment = w-(Math.random() * tamaño);
+        int math = (int)mathExperiment;
 
         if(parimpar){
             Sprite sprite = new Sprite(1);
-            sprite.setImage("space.png", w, h);
+            sprite.setImage("space.png", math, math);
             double x = (Math.random() * 1950)+1850;
             double y = (Math.random() * 725)+1;
             sprite.setPosition(x,y);
@@ -624,7 +635,7 @@ public class Keyboard extends Application {
         parimpar= false;
         }else {
             Sprite sprite = new Sprite("1");
-            sprite.setImage("space.png");
+            sprite.setImage("space.png", math, math);
             double x = (Math.random() * 1950)+1850;
             double y = (Math.random() * 725)+1;
             sprite.setPosition(x,y);
@@ -636,9 +647,12 @@ public class Keyboard extends Application {
     }
 
     private void addVillain2(){
+        int tamaño = 10 * (velocity - 5);
+        double mathExperiment = w-(Math.random() * tamaño);
+        int math = (int)mathExperiment;
         if(spawner.size() % 2 == 0){
             Sprite sprite = new Sprite(1);
-            sprite.setImage("space2.png");
+            sprite.setImage("space2.png", math, math);
             double x = (Math.random() * 1950)-1850;
             double y = (Math.random() * 725)+1;
             sprite.setPosition(x,y);
@@ -647,7 +661,7 @@ public class Keyboard extends Application {
             }
         }else {
             Sprite sprite = new Sprite("1");
-            sprite.setImage("space2.png");
+            sprite.setImage("space2.png", math, math);
             double x = (Math.random() * 1950)-1850;
             double y = (Math.random() * 725)+1;
             sprite.setPosition(x,y);
