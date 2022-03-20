@@ -430,7 +430,7 @@ public class Keyboard extends Application {
 
 
                     if (input.contains("ENTER") && teclapresionada){
-                        if(arcadeBoolean)arcadeTurno++;
+                        arcadeTurno++;
 
                         if(arcadeTurno == 5){
                             defaultoptions();
@@ -482,12 +482,23 @@ public class Keyboard extends Application {
                         }
                     }
 
-                    if(arcadeTurno >= 4){
+                    if(arcadeTurno == 4){
                         if(arcadeBoolean)guardarPuntuacion(points[0]);
-                        //arcadeBoolean=false;
-
-                        for (int i = 2; i >= 0; i--) {
-                            gc2.fillText( scoreList.get(i).nombre + " " + scoreList.get(i).puntuacion, 1300, 360 + ((i+1) * 60) );
+                        arcadeBoolean=false;
+                        gc2.setFill( Color.WHITE );
+                        gc2.fillText( "Ranking", 1300, 300 +  60);
+                        if (scoreList.size() >= 3) {
+                            for (int i = 2; i >= 0; i--) {
+                                gc2.fillText( scoreList.get(i).nombre + " " + scoreList.get(i).puntuacion, 1300, 360 + ((i+1) * 60) );
+                            }
+                        }else if(scoreList.size() == 2){
+                            for (int i = 1; i >= 0; i--) {
+                                gc2.fillText( scoreList.get(i).nombre + " " + scoreList.get(i).puntuacion, 1300, 360 + ((i+1) * 60) );
+                            }
+                        }else {
+                            for (int i = 0; i >= 0; i--) {
+                                gc2.fillText( scoreList.get(i).nombre + " " + scoreList.get(i).puntuacion, 1300, 360 + ((i+1) * 60) );
+                            }
                         }
 
                     }
