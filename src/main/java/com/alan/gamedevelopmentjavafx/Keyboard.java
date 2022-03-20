@@ -725,7 +725,7 @@ public class Keyboard extends Application {
 
     void defaultoptions(){
         refresh = 20;//ms
-        addBallDuration = 5000;//ms
+        addBallDuration = 2500;//ms
         addinvulnerabilidad = 5000;//ms
         temp = 0;
         temp2 = 0;
